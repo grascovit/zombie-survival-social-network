@@ -1,0 +1,43 @@
+require: rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 2.2
+
+  Include:
+    - '**/config.ru'
+  Exclude:
+    - 'vendor/**/*'
+    - 'db/**/*'
+    - 'db/schema.rb'
+    - 'bin/**/*'
+
+Rails:
+  Enabled: true
+
+Metrics/LineLength:
+  Max: 120
+
+Style/Documentation:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 15
+
+Style/IndentArray:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
+
+Style/TrailingCommaInLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Style/GuardClause:
+  Enabled: false
+
+EndOfLine:
+  Enabled: false
