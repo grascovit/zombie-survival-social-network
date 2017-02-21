@@ -6,4 +6,12 @@ FactoryGirl.define do
     latitude { Faker::Number.decimal(2, 6) }
     longitude { Faker::Number.decimal(2, 6) }
   end
+
+  factory :invalid_user, parent: :user do
+    name nil
+    age nil
+    gender nil
+    latitude nil
+    longitude nil
+  end
 end
