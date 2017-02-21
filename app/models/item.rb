@@ -4,5 +4,5 @@ class Item < ApplicationRecord
   validates :name, presence: true
   validates :name, inclusion: { in: VALID_ITEMS }
 
-  belongs_to :user
+  belongs_to :user, inverse_of: :items
 end
