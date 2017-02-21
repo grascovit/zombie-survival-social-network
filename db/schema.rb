@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170221010654) do
+ActiveRecord::Schema.define(version: 20170221214502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "infection_alerts", force: :cascade do |t|
+    t.integer  "infected_user_id"
+    t.integer  "reporter_user_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.index ["infected_user_id"], name: "index_infection_alerts_on_infected_user_id", using: :btree
+    t.index ["reporter_user_id"], name: "index_infection_alerts_on_reporter_user_id", using: :btree
+  end
 
   create_table "items", force: :cascade do |t|
     t.string   "name"

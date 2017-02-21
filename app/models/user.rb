@@ -6,6 +6,8 @@ class User < ApplicationRecord
   validates :longitude, presence: true
 
   has_many :items, inverse_of: :user
+  has_many :reported_infection_alerts, class_name: 'InfectionAlert', foreign_key: 'reporter_user_id'
+  has_many :received_infection_alerts, class_name: 'InfectionAlert', foreign_key: 'infected_user_id'
 
   accepts_nested_attributes_for :items
 end
