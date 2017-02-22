@@ -7,4 +7,7 @@ Rails.application.routes.draw do
 
   resources :items, only: [:show]
   resources :infection_alerts
+
+  put 'trade', to: 'items#trade'
+  patch 'trade', to: 'items#trade'
 end
