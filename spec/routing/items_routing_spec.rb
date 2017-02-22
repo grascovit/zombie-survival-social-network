@@ -22,6 +22,14 @@ RSpec.describe ItemsController, type: :routing do
       expect(patch: 'users/1/items/1').to route_to('items#update', id: '1', user_id: '1')
     end
 
+    it 'routes to #trade via PUT' do
+      expect(put: 'trade').to route_to('items#trade')
+    end
+
+    it 'routes to #trade via PATCH' do
+      expect(patch: 'trade').to route_to('items#trade')
+    end
+
     it 'routes to #destroy' do
       expect(delete: 'users/1/items/1').to route_to('items#destroy', id: '1', user_id: '1')
     end
