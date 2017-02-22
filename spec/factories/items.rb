@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :item do
-    name { 'water' }
+    name { Item::VALID_ITEMS.sample }
     user_id { create(:user).id }
   end
 
