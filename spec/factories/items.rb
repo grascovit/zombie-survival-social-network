@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :item do
-    name { Item::VALID_ITEMS.sample }
+    name { Item::VALID_ITEMS.keys.sample }
     user_id { create(:user).id }
   end
 

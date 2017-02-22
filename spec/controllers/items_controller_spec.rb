@@ -108,7 +108,7 @@ RSpec.describe ItemsController, type: :controller do
 
     context 'with invalid params' do
       it 'does not swap the items' do
-        item_two.name = Item::VALID_ITEMS.find { |item_name| item_one.name != item_name } # set the name to be different
+        item_two.name = Item::VALID_ITEMS.keys.find { |item_name| item_one.name != item_name } # set the name to be different
         item_two.save
         put :trade, params: trade_params
         item_one.reload
