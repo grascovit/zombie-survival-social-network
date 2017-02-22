@@ -12,6 +12,6 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :items
 
   def infected?
-    self.received_infection_alerts.uniq(&:reporter_user_id).size >= 3
+    received_infection_alerts.uniq(&:reporter_user_id).size >= 3
   end
 end

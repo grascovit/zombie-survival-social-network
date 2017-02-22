@@ -88,6 +88,37 @@ RSpec.describe ItemsController, type: :controller do
     end
   end
 
+  describe 'PUT #trade' do
+    let(:item_one) { create(:item) }
+    let(:item_two) { create(:item) }
+
+    context 'with valid params' do
+      it 'swap the requested items' do
+        item_two.name = item_one.name # set the name to be equal
+        item_two.save
+        old_item_one_user_id = item_one.user_id
+        old_item_two_user_id = item_two.user_id
+        put :trade, params: trade_params
+        item_one.reload
+        item_two.reload
+        expect(item_one.user_id).to eq(old_item_two_user_id)
+        expect(item_two.user_id).to eq(old_item_one_user_id)
+      end
+    end
+
+    context 'with invalid params' do
+      it 'does not swap the items' do
+        item_two.name = Item::VALID_ITEMS.find { |item_name| item_one.name != item_name } # set the name to be different
+        item_two.save
+        put :trade, params: trade_params
+        item_one.reload
+        item_two.reload
+        expect(item_one.user_id).to eq(item_one.user_id)
+        expect(item_two.user_id).to eq(item_two.user_id)
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     it 'destroys the requested item' do
       item = Item.create! valid_attributes
@@ -101,5 +132,20 @@ RSpec.describe ItemsController, type: :controller do
       delete :destroy, params: { id: item.to_param, user_id: valid_attributes[:user_id] }
       expect(response).to have_http_status(:no_content)
     end
+  end
+
+  private
+
+  def trade_params
+    {
+      user_one: {
+        id: item_one.user_id,
+        items: [item_one.id],
+      },
+      user_two: {
+        id: item_two.user_id,
+        items: [item_two.id],
+      },
+    }
   end
 end

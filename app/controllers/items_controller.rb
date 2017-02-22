@@ -1,6 +1,9 @@
 class ItemsController < ApplicationController
+  include Tradeable
+
   before_action :set_item, only: [:show, :update, :destroy]
   before_action :set_user, only: [:create, :update, :destroy]
+  before_action :set_users, only: [:trade]
 
   # GET /items
   def index
@@ -15,7 +18,7 @@ class ItemsController < ApplicationController
   end
 
   # POST /items
-  def create   
+  def create
     @item = @user.items.build(item_params)
 
     if @user && @user.infected?
@@ -47,6 +50,17 @@ class ItemsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /items
+  def trade
+    if @user_one.infected? || @user_two.infected?
+      render json: { errors: 'User infected. Cannot trade the item(s)' }, status: :forbidden
+    elsif trade_items
+      render json: [@user_one_items, @user_two_items], status: :ok
+    else
+      render json: { errors: 'The items are not worth the same amount of points' }, status: :forbidden
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -56,6 +70,11 @@ class ItemsController < ApplicationController
 
   def set_user
     @user = User.find(params[:user_id])
+  end
+
+  def set_users
+    @user_one = User.find(params[:user_one][:id])
+    @user_two = User.find(params[:user_two][:id])
   end
 
   # Only allow a trusted parameter "white list" through.
