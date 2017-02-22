@@ -4,6 +4,7 @@ class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :update, :destroy]
   before_action :set_user, only: [:create, :update, :destroy]
   before_action :set_users, only: [:trade]
+  before_action :check_infected_user, only: [:create, :update, :destroy]
 
   # GET /items
   def index
@@ -21,9 +22,7 @@ class ItemsController < ApplicationController
   def create
     @item = @user.items.build(item_params)
 
-    if @user && @user.infected?
-      render json: { errors: 'User infected. Cannot create a new item' }, status: :forbidden
-    elsif @item.save
+    if @item.save
       render json: @item, status: :created, location: @item
     else
       render json: @item.errors, status: :unprocessable_entity
@@ -32,9 +31,7 @@ class ItemsController < ApplicationController
 
   # PATCH/PUT /items/1
   def update
-    if @user && @user.infected?
-      render json: { errors: 'User infected. Cannot update the item' }, status: :forbidden
-    elsif @item.update(item_params)
+    if @item.update(item_params)
       render json: @item
     else
       render json: @item.errors, status: :unprocessable_entity
@@ -43,17 +40,13 @@ class ItemsController < ApplicationController
 
   # DELETE /items/1
   def destroy
-    if @user && @user.infected?
-      render json: { errors: 'User infected. Cannot delete the item' }, status: :forbidden
-    else
-      @item.destroy
-    end
+    @item.destroy
   end
 
   # PATCH/PUT /items
   def trade
     if @user_one.infected? || @user_two.infected?
-      render json: { errors: 'User infected. Cannot trade the item(s)' }, status: :forbidden
+      render json: { errors: 'User infected. Cannot trade items' }, status: :forbidden
     elsif trade_items
       render json: [@user_one_items, @user_two_items], status: :ok
     else
