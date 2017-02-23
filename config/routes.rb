@@ -10,4 +10,9 @@ Rails.application.routes.draw do
 
   put 'trade', to: 'items#trade'
   patch 'trade', to: 'items#trade'
+
+  get 'reports/infected_users'
+  get 'reports/uninfected_users'
+  get 'reports/average_items_per_user'
+  get 'reports/points_lost'
 end
