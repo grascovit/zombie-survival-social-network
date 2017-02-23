@@ -30,6 +30,10 @@ class User < ApplicationRecord
   end
 
   def infected?
-    received_infection_alerts.uniq(&:reporter_user_id).size >= 3
+    received_infection_alerts.distinct(&:reporter_user_id).size >= 3
+  end
+
+  def total_points
+    items.sum { |item| Item::VALID_ITEMS[item.name] }
   end
 end
