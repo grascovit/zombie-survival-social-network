@@ -6,43 +6,19 @@ class Item < ApplicationRecord
 
   belongs_to :user, inverse_of: :items
 
-  scope :water_amount, -> {
-    select('items.*')
-      .joins('LEFT JOIN infection_alerts ON infection_alerts.infected_user_id = items.user_id')
-      .where(name: 'water')
-      .group('items.id, infection_alerts.infected_user_id')
-      .having('COUNT(infection_alerts.reporter_user_id) < 3')
-      .length
-      .to_f
-  }
+  def self.water_amount
+    Item.where(name: 'water', user_id: User.uninfected_users_ids).count.to_f
+  end
 
-  scope :food_amount, -> {
-    select('items.*')
-      .joins('LEFT JOIN infection_alerts ON infection_alerts.infected_user_id = items.user_id')
-      .where(name: 'food')
-      .group('items.id, infection_alerts.infected_user_id')
-      .having('COUNT(infection_alerts.reporter_user_id) < 3')
-      .length
-      .to_f
-  }
+  def self.food_amount
+    Item.where(name: 'food', user_id: User.uninfected_users_ids).count.to_f
+  end
 
-  scope :medicine_amount, -> {
-    select('items.*')
-      .joins('LEFT JOIN infection_alerts ON infection_alerts.infected_user_id = items.user_id')
-      .where(name: 'medicine')
-      .group('items.id, infection_alerts.infected_user_id')
-      .having('COUNT(infection_alerts.reporter_user_id) < 3')
-      .length
-      .to_f
-  }
+  def self.medicine_amount
+    Item.where(name: 'medicine', user_id: User.uninfected_users_ids).count.to_f
+  end
 
-  scope :ammo_amount, -> {
-    select('items.*')
-      .joins('LEFT JOIN infection_alerts ON infection_alerts.infected_user_id = items.user_id')
-      .group('items.id, infection_alerts.infected_user_id')
-      .having('COUNT(infection_alerts.reporter_user_id) < 3')
-      .where(name: 'ammo')
-      .length
-      .to_f
-  }
+  def self.ammo_amount
+    Item.where(name: 'ammo', user_id: User.uninfected_users_ids).count.to_f
+  end
 end

@@ -25,6 +25,10 @@ class User < ApplicationRecord
       .having('COUNT(infection_alerts.reporter_user_id) < 3')
   }
 
+  def self.uninfected_users_ids
+    User.uninfected_users.collect(&:id)
+  end
+
   def infected?
     received_infection_alerts.uniq(&:reporter_user_id).size >= 3
   end
