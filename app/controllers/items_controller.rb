@@ -50,7 +50,7 @@ class ItemsController < ApplicationController
     elsif trade_items
       render json: [@user_one_items, @user_two_items], status: :ok
     else
-      render json: { errors: 'The items are not worth the same amount of points' }, status: :forbidden
+      render json: { errors: 'The items are not worth the same amount of points' }, status: :unprocessable_entity
     end
   end
 
