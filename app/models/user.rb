@@ -11,6 +11,20 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :items
 
+  scope :infected_users, -> {
+    select('users.*')
+      .joins('LEFT JOIN infection_alerts ON infection_alerts.infected_user_id = users.id')
+      .group('users.id, infection_alerts.infected_user_id')
+      .having('COUNT(infection_alerts.reporter_user_id) >= 3')
+  }
+
+  scope :uninfected_users, -> {
+    select('users.*')
+      .joins('LEFT JOIN infection_alerts ON infection_alerts.infected_user_id = users.id')
+      .group('users.id, infection_alerts.infected_user_id')
+      .having('COUNT(infection_alerts.reporter_user_id) < 3')
+  }
+
   def infected?
     received_infection_alerts.uniq(&:reporter_user_id).size >= 3
   end
