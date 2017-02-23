@@ -91,6 +91,7 @@ RSpec.describe ItemsController, type: :controller do
   describe 'PUT #trade' do
     let(:item_one) { create(:item) }
     let(:item_two) { create(:item) }
+    let(:infected_user) { create(:infected_user) }
 
     context 'with valid params' do
       it 'swap the requested items' do
@@ -107,9 +108,19 @@ RSpec.describe ItemsController, type: :controller do
     end
 
     context 'with invalid params' do
-      it 'does not swap the items' do
+      it 'does not swap the items that are not worth the same sum of points' do
         item_two.name = Item::VALID_ITEMS.keys.find { |item_name| item_one.name != item_name } # set the name to be different
         item_two.save
+        put :trade, params: trade_params
+        item_one.reload
+        item_two.reload
+        expect(item_one.user_id).to eq(item_one.user_id)
+        expect(item_two.user_id).to eq(item_two.user_id)
+      end
+
+      it 'does not swap the items from infected user' do
+        item_one.user = infected_user
+        item_one.save
         put :trade, params: trade_params
         item_one.reload
         item_two.reload
