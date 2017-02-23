@@ -5,14 +5,7 @@ module Tradeable
     @user_one_items = Item.where(id: params[:user_one][:items])
     @user_two_items = Item.where(id: params[:user_two][:items])
 
-    calculate_items_points
-
-    swap_items if @user_one_points == @user_two_points
-  end
-
-  def calculate_items_points
-    @user_one_points = @user_one_items.collect { |item| Item::VALID_ITEMS[item.name] }.sum
-    @user_two_points = @user_two_items.collect { |item| Item::VALID_ITEMS[item.name] }.sum
+    swap_items if @user_one.total_points == @user_two.total_points
   end
 
   def swap_items
