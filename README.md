@@ -1,6 +1,6 @@
 # Zombie Survival Social Network
 
-[![Build Status](https://travis-ci.com/grascovit/zombie-survival-social-network.svg?token=eayXJNrAe9LbNAcpFGsz&branch=master)](https://travis-ci.com/grascovit/zombie-survival-social-network)
+[![Build Status](https://travis-ci.org/grascovit/zombie-survival-social-network.svg?branch=master)](https://travis-ci.org/grascovit/zombie-survival-social-network)
 [![codecov](https://codecov.io/gh/grascovit/zombie-survival-social-network/branch/master/graph/badge.svg?token=fHFLeGRtlg)](https://codecov.io/gh/grascovit/zombie-survival-social-network)
 
 [Zombie Survival Social Network](https://gist.github.com/mauricioklein/1b1f279ad2d9cb42bcf0018e1cf05cfb)
